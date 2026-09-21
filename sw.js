@@ -48,4 +48,18 @@ self.addEventListener('fetch', event => {
         });
       })
   );
+});// Fetch Event - Serve from Cache when offline
+self.addEventListener('fetch', event => {
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
+        if (response) {
+          return response;
+        }
+        return fetch(event.request).catch(() => {
+          // Fallback if offline and resource not cached
+          return caches.match('./university_schedule.html');
+        });
+      })
+  );
 });
