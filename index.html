@@ -1,511 +1,125 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ka" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ჩემი უნივერსიტეტის განრიგი - Pro</title>
-    <!-- PWA Manifest Link -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#090d16">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="უნივერსიტეტის განრიგი">
-
-    <!-- Tailwind CSS v4 CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #090d16;
-            color: #f8fafc;
-            -webkit-tap-highlight-color: transparent;
-        }
-        ::-webkit-scrollbar {
-            height: 4px;
-            width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #111827;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #374151;
-            border-radius: 2px;
-        }
-        .glass-card {
-            background: rgba(17, 24, 39, 0.75);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-        }
-        .glass-input {
-            background: rgba(30, 41, 59, 0.5);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta name="theme-color" content="#080b14" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>ჩემი უნივერსიტეტის განრიგი</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Inter, system-ui, sans-serif; background: #080b14; color: #f8fafc; -webkit-tap-highlight-color: transparent; }
+    .glass { background: rgba(17,24,39,.78); border: 1px solid rgba(148,163,184,.12); backdrop-filter: blur(18px); }
+    .soft { box-shadow: 0 12px 32px rgba(0,0,0,.2); }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 99px; }
+    .safe-bottom { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
+  </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white pb-24">
+<body class="min-h-screen safe-bottom">
+  <header class="sticky top-0 z-20 glass border-x-0 border-t-0 px-4 py-3">
+    <div class="mx-auto flex max-w-md items-center justify-between">
+      <div>
+        <h1 class="flex items-center gap-2 text-base font-bold"><i class="fa-solid fa-graduation-cap text-indigo-400"></i>უნივერსიტეტის განრიგი</h1>
+        <p id="date" class="mt-1 text-[11px] text-slate-400">იტვირთება...</p>
+      </div>
+      <time id="clock" class="rounded-full border border-slate-700 bg-slate-900/80 px-2.5 py-1 font-mono text-xs text-indigo-300">00:00:00</time>
+    </div>
+  </header>
 
-    <!-- Top App Bar -->
-    <header class="sticky top-0 z-50 glass-card border-b border-slate-800/80 px-4 py-3">
-        <div class="max-w-md mx-auto flex justify-between items-center">
-            <div>
-                <h1 class="text-base font-bold tracking-tight text-white flex items-center gap-2">
-                    <i class="fa-solid fa-graduation-cap text-indigo-400"></i> უნივერსიტეტის განრიგი
-                </h1>
-                <p id="current-date-str" class="text-xs text-slate-400">იტვირთება...</p>
-            </div>
-            <div class="flex items-center gap-2">
-                <span id="live-clock" class="text-xs font-mono bg-slate-800/80 px-2.5 py-1 rounded-full border border-slate-700/60 text-indigo-300 shadow-inner">00:00:00</span>
-            </div>
+  <main class="mx-auto max-w-md space-y-4 p-4">
+    <div class="grid grid-cols-3 gap-2">
+      <div class="glass rounded-xl p-3"><p id="total-count" class="text-lg font-bold text-white">18</p><p class="text-[10px] text-slate-400">სულ სესია</p></div>
+      <div class="glass rounded-xl p-3"><p id="course-count" class="text-lg font-bold text-white">8</p><p class="text-[10px] text-slate-400">საგანი</p></div>
+      <div class="glass rounded-xl p-3"><p id="week-hours" class="text-lg font-bold text-white">—</p><p class="text-[10px] text-slate-400">სთ კვირაში</p></div>
+    </div>
+
+    <div class="relative">
+      <i class="fa-solid fa-magnifying-glass pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-xs text-slate-500"></i>
+      <input id="search" type="search" autocomplete="off" placeholder="საგანი, ლექტორი, ოთახი..." class="glass w-full rounded-xl py-3 pl-10 pr-4 text-xs text-white outline-none placeholder:text-slate-500 focus:border-indigo-500" />
+    </div>
+
+    <section id="next-card" class="glass soft relative overflow-hidden rounded-2xl border-indigo-500/30 p-4">
+      <div class="absolute -bottom-10 -right-8 h-32 w-32 rounded-full bg-indigo-500/10 blur-2xl"></div>
+      <div class="relative">
+        <div class="mb-3 flex items-center justify-between gap-2">
+          <span id="next-status" class="rounded-full border border-indigo-500/30 bg-indigo-500/15 px-2.5 py-1 text-[10px] font-semibold text-indigo-300">უახლოესი სესია</span>
+          <span id="countdown" class="font-mono text-xs font-semibold text-emerald-400">--:--:--</span>
         </div>
-    </header>
-
-    <!-- Main Container -->
-    <main class="max-w-md w-full mx-auto p-4 space-y-4 flex-grow">
-
-        <!-- Search Bar -->
-        <div class="relative">
-            <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
-                <i class="fa-solid fa-magnifying-glass text-xs"></i>
-            </span>
-            <input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="მოძებნე საგანი, ლექტორი ან ოთახი..." class="glass-input w-full py-2.5 pl-10 pr-4 rounded-xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-indigo-500 transition-all shadow-inner">
+        <h2 id="next-title" class="text-sm font-bold leading-snug">იტვირთება...</h2>
+        <p id="next-time" class="mt-1 text-xs text-indigo-300"></p>
+        <div class="mt-3 grid grid-cols-2 gap-2 border-t border-slate-800 pt-3 text-[11px] text-slate-400">
+          <span class="flex min-w-0 items-center gap-1.5"><i class="fa-solid fa-user-tie text-indigo-400"></i><b id="next-lecturer" class="truncate font-medium text-slate-300"></b></span>
+          <span class="flex min-w-0 items-center gap-1.5"><i class="fa-solid fa-location-dot text-rose-400"></i><b id="next-location" class="truncate font-medium text-slate-300"></b></span>
         </div>
+      </div>
+    </section>
 
-        <!-- Next Lecture Dynamic Card / Widget -->
-        <section id="next-lecture-section" class="glass-card rounded-2xl p-4 border border-indigo-500/30 shadow-xl shadow-indigo-500/5 relative overflow-hidden">
-            <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
-            <div class="flex justify-between items-center mb-2.5">
-                <span id="nl-status-badge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
-                    უახლოესი ლექცია
-                </span>
-                <span id="countdown-timer" class="text-xs font-mono font-semibold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">--:--:--</span>
-            </div>
-            
-            <div id="next-lecture-content">
-                <h3 id="nl-title" class="text-sm font-bold text-white mb-1 leading-snug">იტვირთება...</h3>
-                <p id="nl-details" class="text-xs text-slate-300 mb-2.5 flex items-center gap-2">
-                    <span id="nl-type-badge" class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px]">--</span>
-                    <span id="nl-time" class="text-slate-400">--:-- - --:--</span>
-                </p>
-                <div class="grid grid-cols-2 gap-2 text-[11px] text-slate-400 pt-2 border-t border-slate-800/80">
-                    <div class="flex items-center gap-1.5 truncate">
-                        <i class="fa-solid fa-user-tie text-indigo-400 shrink-0"></i>
-                        <span id="nl-lecturer" class="truncate">--</span>
-                    </div>
-                    <div class="flex items-center gap-1.5 truncate">
-                        <i class="fa-solid fa-location-dot text-rose-400 shrink-0"></i>
-                        <span id="nl-location" class="truncate">--</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <div id="tabs" class="flex gap-2 overflow-x-auto pb-1"></div>
+    <div id="schedule" class="space-y-5"></div>
+  </main>
 
-        <!-- Day Selector Tabs -->
-        <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar" id="day-tabs">
-            <button onclick="switchTab('all')" class="day-tab px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/30" data-day="all">ყველა დღე</button>
-            <button onclick="switchTab('სამშაბათი')" class="day-tab px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all bg-slate-800/80 text-slate-300 border border-slate-700/60 hover:bg-slate-700" data-day="სამშაბათი">სამშაბათი</button>
-            <button onclick="switchTab('ოთხშაბათი')" class="day-tab px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all bg-slate-800/80 text-slate-300 border border-slate-700/60 hover:bg-slate-700" data-day="ოთხშაბათი">ოთხშაბათი</button>
-            <button onclick="switchTab('ხუთშაბათი')" class="day-tab px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all bg-slate-800/80 text-slate-300 border border-slate-700/60 hover:bg-slate-700" data-day="ხუთშაბათი">ხუთშაბათი</button>
-            <button onclick="switchTab('პარასკევი')" class="day-tab px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all bg-slate-800/80 text-slate-300 border border-slate-700/60 hover:bg-slate-700" data-day="პარასკევი">პარასკევი</button>
-        </div>
+  <nav class="fixed bottom-0 left-0 right-0 z-30 border-t border-slate-800/80 bg-slate-950/90 px-6 py-2.5 backdrop-blur-xl" style="padding-bottom:calc(.625rem + env(safe-area-inset-bottom))">
+    <div class="mx-auto flex max-w-md items-center justify-around text-slate-400">
+      <button onclick="setFilter('all')" class="flex flex-col items-center gap-1 text-indigo-400"><i class="fa-solid fa-calendar-days"></i><span class="text-[10px]">განრიგი</span></button>
+      <button onclick="document.getElementById('next-card').scrollIntoView({behavior:'smooth'})" class="flex flex-col items-center gap-1 hover:text-indigo-400"><i class="fa-solid fa-clock"></i><span class="text-[10px]">უახლოესი</span></button>
+      <button onclick="resetView()" class="flex flex-col items-center gap-1 hover:text-indigo-400"><i class="fa-solid fa-rotate-right"></i><span class="text-[10px]">განახლება</span></button>
+    </div>
+  </nav>
 
-        <!-- Schedule List Container -->
-        <div id="schedule-container" class="space-y-4">
-            <!-- Dynamically populated via JS -->
-        </div>
+<script>
+const days = [
+  { name:'სამშაბათი', index:2, items:[
+    ['მენეჯმენტის საფუძვლები','სამუშაო ჯგუფი','11:00','11:50','ხარხელი მანანა','X კორპუსი/12 სართული/1217'],
+    ['მენეჯმენტის საფუძვლები','სამუშაო ჯგუფი','12:00','12:50','ხარხელი მანანა','X კორპუსი/12 სართული/1217'],
+    ['ეკონომიკის ციფრული ტრანსფორმაცია და მდგრადი ეკონომიკა','სამუშაო ჯგუფი','13:00','14:50','ლაშარაშვილი თეა','X კორპუსი/10 სართული/1010'],
+    ['მარკეტინგი 2','სამუშაო ჯგუფი','15:00','15:50','მიქატაძე ცირა','X კორპუსი/11 სართული/1104'],
+    ['მარკეტინგი 2','სამუშაო ჯგუფი','16:00','16:50','მიქატაძე ცირა','X კორპუსი/11 სართული/1104'],
+    ['მიკროეკონომიკის პრინციპები','სამუშაო ჯგუფი','17:00','18:50','ჭიკაიძე ნათია','X კორპუსი/9 სართული/902'],
+    ['ბიზნესის ადმინისტრირების საფუძვლები 1 (ბიზნესის გარემო)','სამუშაო ჯგუფი','19:00','20:50','შენგელია თეიმურაზ','X კორპუსი/10 სართული/1006']
+  ]},
+  { name:'ოთხშაბათი', index:3, items:[
+    ['მენეჯმენტის საფუძვლები','ლექცია','11:00','11:50','ქიშელაშვილი გიული','X კორპუსი/2 სართული/201'],
+    ['მარკეტინგი 2','ლექცია','15:00','15:50','სეთური მაია','X კორპუსი/11 სართული/1110'],
+    ['ადამიანური რესურსების მართვა','სამუშაო ჯგუფი','17:00','17:50','ტუღუში მირიან','X კორპუსი/12 სართული/1212'],
+    ['ადამიანური რესურსების მართვა','სამუშაო ჯგუფი','18:00','18:50','ტუღუში მირიან','X კორპუსი/12 სართული/1212'],
+    ['ბიზნესის ადმინისტრირების საფუძვლები 1 (ბიზნესის გარემო)','ლექცია','19:00','19:50','ბაბუნაშვილი თეიმურაზ','X კორპუსი/2 სართული/208'],
+    ['მიკროეკონომიკის პრინციპები','ლექცია','20:00','20:50','ავალიანი ეკა','X კორპუსი/2 სართული/205']
+  ]},
+  { name:'ხუთშაბათი', index:4, items:[
+    ['ეკონომიკის ციფრული ტრანსფორმაცია და მდგრადი ეკონომიკა','ლექცია','17:00','17:50','კაკულია ნაზირა','X კორპუსი/2 სართული/201'],
+    ['ფინანსური ინსტიტუტები და ბაზრები','ლექცია','19:00','19:50','ჩუთლაშვილი ავთანდილი','X კორპუსი/2 სართული/202']
+  ]},
+  { name:'პარასკევი', index:5, items:[
+    ['ადამიანური რესურსების მართვა','ლექცია','18:00','18:50','კურტანიძე ანა','X კორპუსი/2 სართული/201'],
+    ['ფინანსური ინსტიტუტები და ბაზრები','სამუშაო ჯგუფი','19:00','19:50','დუდუჩავა ლილია','X კორპუსი/4 სართული/404 (სასწავლო)'],
+    ['ფინანსური ინსტიტუტები და ბაზრები','სამუშაო ჯგუფი','20:00','20:50','დუდუჩავა ლილია','X კორპუსი/4 სართული/404 (სასწავლო)']
+  ]}
+].map(day => ({...day, items:day.items.map(([title,type,start,end,lecturer,location]) => ({title,type,start,end,lecturer,location,duration:mins(end)-mins(start)}))}));
 
-    </main>
-
-    <!-- Bottom Mobile Navigation Bar -->
-    <nav class="fixed bottom-0 left-0 right-0 glass-card border-t border-slate-800/80 py-2.5 px-6 z-50">
-        <div class="max-w-md mx-auto flex justify-around items-center text-slate-400">
-            <button onclick="switchTab('all')" class="flex flex-col items-center gap-1 text-indigo-400 transition-colors">
-                <i class="fa-solid fa-calendar-days text-base"></i>
-                <span class="text-[10px] font-medium">განრიგი</span>
-            </button>
-            <button onclick="scrollToNextLecture()" class="flex flex-col items-center gap-1 hover:text-indigo-400 transition-colors">
-                <i class="fa-solid fa-clock text-base"></i>
-                <span class="text-[10px] font-medium">უახლოესი</span>
-            </button>
-            <button onclick="resetSearchAndFilter()" class="flex flex-col items-center gap-1 hover:text-indigo-400 transition-colors">
-                <i class="fa-solid fa-rotate-right text-base"></i>
-                <span class="text-[10px] font-medium">განახლება</span>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Script Application Logic -->
-    <script>
-        // Register Service Worker for true offline PWA support
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('Service Worker registered successfully:', reg.scope))
-                    .catch(err => console.log('Service Worker registration failed:', err));
-            });
-        }
-
-        const rawScheduleData = [
-            {
-                day: "სამშაბათი",
-                dayIndex: 2,
-                items: [
-                    { title: "მენეჯმენტის საფუძვლები", type: "სამუშაო ჯგუფი", start: "11:00", end: "11:50", lecturer: "ხარხელი მანანა", location: "X კორპუსი/12 სართული/1217" },
-                    { title: "მენეჯმენტის საფუძვლები", type: "სამუშაო ჯგუფი", start: "12:00", end: "12:50", lecturer: "ხარხელი მანანა", location: "X კორპუსი/12 სართული/1217" },
-                    { title: "ეკონომიკის ციფრული ტრანსფორმაცია და მდგრადი ეკონომიკა", type: "სამუშაო ჯგუფი", start: "13:00", end: "14:50", lecturer: "ლაშარაშვილი თეა", location: "X კორპუსი/10 სართული/1010" },
-                    { title: "მარკეტინგი 2", type: "სამუშაო ჯგუფი", start: "15:00", end: "15:50", lecturer: "მიქატაძე ცირა", location: "X კორპუსი/11 სართული/1104" },
-                    { title: "მარკეტინგი 2", type: "სამუშაო ჯგუფი", start: "16:00", end: "16:50", lecturer: "მიქატაძე ცირა", location: "X კორპუსი/11 სართული/1104" },
-                    { title: "მიკროეკონომიკის პრინციპები", type: "სამუშაო ჯგუფი", start: "17:00", end: "18:50", lecturer: "ჭიკაიძე ნათია", location: "X კორპუსი/9 სართული/902" },
-                    { title: "ბიზნესის ადმინისტრირების საფუძვლები 1 (ბიზნესის გარემო)", type: "სამუშაო ჯგუფი", start: "19:00", end: "20:50", lecturer: "შენგელია თეიმურაზ", location: "X კორპუსი/10 სართული/1006" }
-                ]
-            },
-            {
-                day: "ოთხშაბათი",
-                dayIndex: 3,
-                items: [
-                    { title: "მენეჯმენტის საფუძვლები", type: "ლექცია", start: "11:00", end: "11:50", lecturer: "ქიშელაშვილი გიული", location: "X კორპუსი/2 სართული/201" },
-                    { title: "მარკეტინგი 2", type: "ლექცია", start: "15:00", end: "15:50", lecturer: "სეთური მაია", location: "X კორპუსი/11 სართული/1110" },
-                    { title: "ადამიანური რესურსების მართვა", type: "სამუშაო ჯგუფი", start: "17:00", end: "17:50", lecturer: "ტუღუში მირიან", location: "X კორპუსი/12 სართული/1212" },
-                    { title: "ადამიანური რესურსების მართვა", type: "სამუშაო ჯგუფი", start: "18:00", end: "18:50", lecturer: "ტუღუში მირიან", location: "X კორპუსი/12 სართული/1212" },
-                    { title: "ბიზნესის ადმინისტრირების საფუძვლები 1 (ბიზნესის გარემო)", type: "ლექცია", start: "19:00", end: "19:50", lecturer: "ბაბუნაშვილი თეიმურაზ", location: "X კორპუსი/2 სართული/208" },
-                    { title: "მიკროეკონომიკის პრინციპები", type: "ლექცია", start: "20:00", end: "20:50", lecturer: "ავალიანი ეკა", location: "X კორპუსი/2 სართული/205" }
-                ]
-            },
-            {
-                day: "ხუთშაბათი",
-                dayIndex: 4,
-                items: [
-                    { title: "ეკონომიკის ციფრული ტრანსფორმაცია და მდგრადი ეკონომიკა", type: "ლექცია", start: "17:00", end: "17:50", lecturer: "კაკულია ნაზირა", location: "X კორპუსი/2 სართული/201" },
-                    { title: "ფინანსური ინსტიტუტები და ბაზრები", type: "ლექცია", start: "19:00", end: "19:50", lecturer: "ჩუთლაშვილი ავთანდილი", location: "X კორპუსი/2 სართული/202" }
-                ]
-            },
-            {
-                day: "პარასკევი",
-                dayIndex: 5,
-                items: [
-                    { title: "ადამიანური რესურსების მართვა", type: "ლექცია", start: "18:00", end: "18:50", lecturer: "კურტანიძე ანა", location: "X კორპუსი/2 სართული/201" },
-                    { title: "ფინანსური ინსტიტუტები და ბაზრები", type: "სამუშაო ჯგუფი", start: "19:00", end: "19:50", lecturer: "დუდუჩავა ლილია", location: "X კორპუსი/4 სართული/404 (სასწავლო)" },
-                    { title: "ფინანსური ინსტიტუტები და ბაზრები", type: "სამუშაო ჯგუფი", start: "20:00", end: "20:50", lecturer: "დუდუჩავა ლილია", location: "X კორპუსი/4 სართული/404 (სასწავლო)" }
-                ]
-            }
-        ];
-
-        // Helper function to convert "HH:MM" to minutes from midnight
-        function timeToMins(timeStr) {
-            const [h, m] = timeStr.split(':').map(Number);
-            return h * 60 + m;
-        }
-
-        // Helper function to format duration in minutes to readable Georgian string
-        function formatDuration(mins) {
-            if (mins < 60) {
-                return `${mins} წთ`;
-            }
-            const hrs = Math.floor(mins / 60);
-            const remMins = mins % 60;
-            if (remMins === 0) {
-                return `${hrs} სთ`;
-            }
-            return `${hrs} სთ ${remMins} წთ`;
-        }
-
-        // Merge consecutive items with 10-min informal breaks and compute durations & breaks
-        const scheduleData = rawScheduleData.map(dayGroup => {
-            const mergedItems = [];
-            let items = dayGroup.items;
-
-            for (let i = 0; i < items.length; i++) {
-                let current = { ...items[i] };
-                
-                while (i + 1 < items.length) {
-                    let next = items[i + 1];
-                    if (
-                        next.title === current.title &&
-                        next.type === current.type &&
-                        next.lecturer === current.lecturer &&
-                        next.location === current.location
-                    ) {
-                        let currEndMins = timeToMins(current.end);
-                        let nextStartMins = timeToMins(next.start);
-                        if (nextStartMins - currEndMins <= 15) {
-                            current.end = next.end;
-                            i++;
-                        } else {
-                            break;
-                        }
-                    } else {
-                        break;
-                    }
-                }
-
-                const startMins = timeToMins(current.start);
-                const endMins = timeToMins(current.end);
-                current.durationMins = endMins - startMins;
-
-                mergedItems.push(current);
-            }
-
-            for (let j = 0; j < mergedItems.length; j++) {
-                if (j + 1 < mergedItems.length) {
-                    let currEnd = timeToMins(mergedItems[j].end);
-                    let nextStart = timeToMins(mergedItems[j+1].start);
-                    let gap = nextStart - currEnd;
-                    mergedItems[j].breakToNext = gap > 0 ? gap : 0;
-                } else {
-                    mergedItems[j].breakToNext = 0;
-                }
-            }
-
-            return {
-                ...dayGroup,
-                items: mergedItems
-            };
-        });
-
-        let activeFilter = 'all';
-        let searchQuery = '';
-
-        function renderSchedule() {
-            const container = document.getElementById('schedule-container');
-            container.innerHTML = '';
-
-            let dataToRender = scheduleData;
-            if (activeFilter !== 'all') {
-                dataToRender = scheduleData.filter(d => d.day === activeFilter);
-            }
-
-            let filteredData = dataToRender.map(dayGroup => {
-                let items = dayGroup.items.filter(item => 
-                    item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    item.lecturer.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    item.location.toLowerCase().includes(searchQuery.toLowerCase())
-                );
-                return { ...dayGroup, items };
-            }).filter(dayGroup => dayGroup.items.length > 0);
-
-            if (filteredData.length === 0) {
-                container.innerHTML = `<div class="text-center py-12 text-slate-500 text-xs">მონაცემები ვერ მოიძებნა</div>`;
-                return;
-            }
-
-            const now = new Date();
-            const currentDayIndex = now.getDay();
-            const currentMins = now.getHours() * 60 + now.getMinutes();
-            const dayMappingReverse = { 2: "სამშაბათი", 3: "ოთხშაბათი", 4: "ხუთშაბათი", 5: "პარასკევი" };
-            const todayName = dayMappingReverse[currentDayIndex];
-
-            filteredData.forEach(dayGroup => {
-                const dayWrapper = document.createElement('div');
-                dayWrapper.className = 'space-y-3';
-                
-                let html = `
-                    <div class="flex items-center gap-2 pt-2">
-                        <h2 class="text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-lg border border-indigo-500/20 inline-block">${dayGroup.day}</h2>
-                        <div class="h-[1px] bg-slate-800 flex-grow"></div>
-                        <span class="text-[10px] text-slate-500 font-mono">${dayGroup.items.length} სესია</span>
-                    </div>
-                    <div class="space-y-3">
-                `;
-
-                dayGroup.items.forEach(item => {
-                    const isLecture = item.type === 'ლექცია';
-                    const badgeColor = isLecture ? 'bg-amber-500/10 text-amber-300 border-amber-500/20' : 'bg-blue-500/10 text-blue-300 border-blue-500/20';
-                    
-                    const startMins = timeToMins(item.start);
-                    const endMins = timeToMins(item.end);
-                    
-                    let itemStatusHtml = '';
-                    if (dayGroup.day === todayName) {
-                        if (currentMins < startMins) {
-                            itemStatusHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-800 text-slate-300 border border-slate-700">ჯერ არ დაწყებულა</span>`;
-                        } else if (currentMins >= startMins && currentMins <= endMins) {
-                            itemStatusHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 animate-pulse">მიმდინარეობს ახლა</span>`;
-                        } else {
-                            itemStatusHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-medium bg-slate-900 text-slate-500 border border-slate-800">დასრულებულია</span>`;
-                        }
-                    }
-
-                    html += `
-                        <div class="glass-card rounded-xl p-3.5 border border-slate-800/80 hover:border-slate-700 transition-all shadow-sm space-y-2.5">
-                            <div class="flex justify-between items-start gap-2">
-                                <div class="space-y-1">
-                                    <h3 class="text-xs font-bold text-slate-100 leading-snug">${item.title}</h3>
-                                    <div class="flex items-center gap-1.5 flex-wrap">
-                                        <span class="px-2 py-0.5 rounded text-[10px] font-medium border ${badgeColor}">${item.type}</span>
-                                        ${itemStatusHtml}
-                                        <span class="text-[10px] text-indigo-400 font-mono bg-indigo-500/10 px-1.5 py-0.5 rounded">ხანგრძლივობა: ${formatDuration(item.durationMins)}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="flex flex-wrap items-center gap-y-1 gap-x-3 text-xs text-slate-300 pt-1 border-t border-slate-800/60">
-                                <span class="flex items-center gap-1 font-mono text-indigo-300 bg-indigo-500/10 px-2 py-0.5 rounded">
-                                    <i class="fa-regular fa-clock"></i> ${item.start} - ${item.end}
-                                </span>
-                                <span class="flex items-center gap-1 truncate">
-                                    <i class="fa-solid fa-user-tie text-slate-400"></i> ${item.lecturer}
-                                </span>
-                            </div>
-
-                            <div class="flex items-center gap-1.5 text-[11px] text-slate-300 bg-slate-950/50 px-2.5 py-1.5 rounded-lg border border-slate-800/60">
-                                <i class="fa-solid fa-location-dot text-rose-400 shrink-0"></i>
-                                <span class="font-medium text-white truncate">${item.location}</span>
-                            </div>
-                        </div>
-                    `;
-
-                    if (item.breakToNext > 0) {
-                        html += `
-                            <div class="flex items-center justify-center gap-2 py-1.5 text-[11px] text-emerald-400/90 font-medium bg-emerald-500/5 rounded-lg border border-emerald-500/10">
-                                <i class="fa-solid fa-mug-hot text-xs"></i>
-                                <span>შესვენება / თავისუფალი დრო: ${formatDuration(item.breakToNext)}</span>
-                            </div>
-                        `;
-                    }
-                });
-
-                html += `</div>`;
-                dayWrapper.innerHTML = html;
-                container.appendChild(dayWrapper);
-            });
-        }
-
-        function switchTab(day) {
-            activeFilter = day;
-            document.querySelectorAll('.day-tab').forEach(btn => {
-                if (btn.getAttribute('data-day') === day) {
-                    btn.className = "day-tab px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/30";
-                } else {
-                    btn.className = "day-tab px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all bg-slate-800/80 text-slate-300 border border-slate-700/60 hover:bg-slate-700";
-                }
-            });
-            renderSchedule();
-        }
-
-        function handleSearch(query) {
-            searchQuery = query.trim();
-            renderSchedule();
-        }
-
-        function resetSearchAndFilter() {
-            document.getElementById('search-input').value = '';
-            searchQuery = '';
-            const currentDayIndex = new Date().getDay();
-            const dayMappingReverse = { 2: "სამშაბათი", 3: "ოთხშაბათი", 4: "ხუთშაბათი", 5: "პარასკევი" };
-            if (dayMappingReverse[currentDayIndex]) {
-                switchTab(dayMappingReverse[currentDayIndex]);
-            } else {
-                switchTab('all');
-            }
-        }
-
-        function updateDateTimeAndNextLecture() {
-            const now = new Date();
-            
-            const options = { weekday: 'long', month: 'long', day: 'numeric' };
-            document.getElementById('current-date-str').textContent = now.toLocaleDateString('ka-GE', options);
-            
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('live-clock').textContent = `${hours}:${minutes}:${seconds}`;
-
-            const dayMapping = { 2: "სამშაბათი", 3: "ოთხშაბათი", 4: "ხუთშაბათი", 5: "პარასკევი" };
-            const currentDayIndex = now.getDay();
-            const currentTimeMinutes = now.getHours() * 60 + now.getMinutes();
-
-            let upcoming = null;
-
-            for (let i = 0; i < 7; i++) {
-                let checkIndex = (currentDayIndex + i) % 7;
-                let dayName = dayMapping[checkIndex];
-                if (!dayName) continue;
-
-                let dayObj = scheduleData.find(d => d.day === dayName);
-                if (!dayObj) continue;
-
-                for (let item of dayObj.items) {
-                    let sMins = timeToMins(item.start);
-                    let eMins = timeToMins(item.end);
-
-                    if (i === 0) {
-                        if (currentTimeMinutes >= sMins && currentTimeMinutes <= eMins) {
-                            upcoming = { ...item, dayName, dayOffset: 0, statusText: "მიმდინარეობს ახლა", statusType: "ongoing" };
-                            break;
-                        }
-                        if (sMins > currentTimeMinutes) {
-                            upcoming = { ...item, dayName, dayOffset: 0, statusText: "ჯერ არ დაწყებულა", statusType: "upcoming" };
-                            break;
-                        }
-                    } else {
-                        upcoming = { ...item, dayName, dayOffset: i, statusText: "მომავალი ლექცია", statusType: "upcoming" };
-                        break;
-                    }
-                }
-                if (upcoming) break;
-            }
-
-            if (!upcoming && scheduleData.length > 0) {
-                let firstDay = scheduleData[0];
-                let item = firstDay.items[0];
-                upcoming = { ...item, dayName: firstDay.day, dayOffset: 7, statusText: "მომავალი კვირა", statusType: "upcoming" };
-            }
-
-            if (upcoming) {
-                document.getElementById('nl-title').textContent = upcoming.title;
-                document.getElementById('nl-type-badge').textContent = upcoming.type;
-                document.getElementById('nl-time').textContent = `${upcoming.dayName} (${upcoming.start} - ${upcoming.end}) • ${formatDuration(upcoming.durationMins)}`;
-                document.getElementById('nl-lecturer').textContent = upcoming.lecturer;
-                document.getElementById('nl-location').textContent = upcoming.location;
-
-                const statusBadge = document.getElementById('nl-status-badge');
-                if (upcoming.statusType === "ongoing") {
-                    statusBadge.className = "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
-                    statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> მიმდინარეობს ახლა`;
-                    document.getElementById('countdown-timer').textContent = "აქტიურია";
-                } else {
-                    statusBadge.className = "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-indigo-500/20 text-indigo-300 border border-indigo-500/30";
-                    statusBadge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span> ${upcoming.statusText}`;
-
-                    let targetDate = new Date(now);
-                    if (upcoming.dayOffset > 0) {
-                        targetDate.setDate(now.getDate() + upcoming.dayOffset);
-                    }
-                    let [sHour, sMin] = upcoming.start.split(':').map(Number);
-                    targetDate.setHours(sHour, sMin, 0, 0);
-
-                    let diffMs = targetDate - now;
-                    if (diffMs > 0) {
-                        let diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
-                        let diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-                        let diffSecs = Math.floor((diffMs % (1000 * 60)) / 1000);
-                        
-                        let countdownStr = "";
-                        if (diffHrs > 0) countdownStr += `${diffHrs}სთ `;
-                        countdownStr += `${diffMins}წთ ${diffSecs}წმ`;
-                        document.getElementById('countdown-timer').textContent = countdownStr;
-                    }
-                }
-            }
-        }
-
-        function scrollToNextLecture() {
-            document.getElementById('next-lecture-section').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        const currentDayIndex = new Date().getDay();
-        const dayMappingReverse = { 2: "სამშაბათი", 3: "ოთხშაბათი", 4: "ხუთშაბათი", 5: "პარასკევი" };
-        if (dayMappingReverse[currentDayIndex]) {
-            switchTab(dayMappingReverse[currentDayIndex]);
-        } else {
-            renderSchedule();
-        }
-
-        updateDateTimeAndNextLecture();
-        setInterval(updateDateTimeAndNextLecture, 1000);
-    </script>
+let active='all', query='';
+const dayMap={2:'სამშაბათი',3:'ოთხშაბათი',4:'ხუთშაბათი',5:'პარასკევი'};
+const allItems=days.flatMap(d=>d.items);
+function mins(t){const [h,m]=t.split(':').map(Number);return h*60+m;}
+function duration(n){return n<60?n+' წთ':Math.floor(n/60)+' სთ'+(n%60?' '+n%60+' წთ':'');}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function renderTabs(){document.getElementById('tabs').innerHTML=[['all','ყველა'],...days.map(d=>[d.name,d.name])].map(([v,label])=>`<button onclick="setFilter('${v}')" class="tab whitespace-nowrap rounded-xl border px-3.5 py-2 text-xs font-semibold ${active===v?'border-indigo-500 bg-indigo-600 text-white':'border-slate-700/70 bg-slate-800/80 text-slate-300'}">${label}</button>`).join('');}
+function render(){
+  renderTabs(); const list=days.filter(d=>active==='all'||d.name===active).map(d=>({...d,items:d.items.filter(x=>[x.title,x.type,x.lecturer,x.location].some(v=>v.toLowerCase().includes(query.toLowerCase())))})).filter(d=>d.items.length);
+  const now=new Date(), today=dayMap[now.getDay()], current=now.getHours()*60+now.getMinutes();
+  document.getElementById('schedule').innerHTML=list.length?list.map(d=>`<section><div class="mb-2 flex items-center gap-2"><h2 class="rounded-lg border border-indigo-500/20 bg-indigo-500/10 px-3 py-1 text-xs font-bold text-indigo-300">${d.name}</h2><span class="h-px flex-1 bg-slate-800"></span><span class="text-[10px] text-slate-500">${d.items.length} სესია</span></div><div class="space-y-2">${d.items.map((x,i)=>{const ongoing=d.name===today&&current>=mins(x.start)&&current<=mins(x.end);const past=d.name===today&&current>mins(x.end);const gap=d.items[i+1]?mins(d.items[i+1].start)-mins(x.end):0;return `<article class="glass rounded-xl p-3.5 ${ongoing?'border-emerald-500/60 ring-1 ring-emerald-500/20':''}"><div class="flex items-start justify-between gap-2"><h3 class="text-xs font-bold leading-snug text-slate-100">${esc(x.title)}</h3>${ongoing?'<span class="shrink-0 rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] text-emerald-300">ახლა</span>':past?'<span class="shrink-0 text-[10px] text-slate-600">დასრულდა</span>':''}</div><div class="mt-2 flex flex-wrap items-center gap-1.5"><span class="rounded border px-2 py-0.5 text-[10px] ${x.type==='ლექცია'?'border-amber-500/25 bg-amber-500/10 text-amber-300':'border-blue-500/25 bg-blue-500/10 text-blue-300'}">${x.type}</span><span class="rounded bg-indigo-500/10 px-2 py-0.5 font-mono text-[10px] text-indigo-300">${x.start}–${x.end}</span><span class="text-[10px] text-slate-500">${duration(x.duration)}</span></div><div class="mt-2 space-y-1 border-t border-slate-800/80 pt-2 text-[11px] text-slate-400"><p><i class="fa-solid fa-user-tie mr-1.5 text-indigo-400"></i>${esc(x.lecturer)}</p><p><i class="fa-solid fa-location-dot mr-1.5 text-rose-400"></i>${esc(x.location)}</p></div></article>${gap>0?`<div class="py-1 text-center text-[10px] text-emerald-400/80"><i class="fa-solid fa-mug-hot mr-1"></i>შესვენება ${duration(gap)}</div>`:''}`}).join('')}</div></section>`).join(''):'<div class="py-12 text-center text-xs text-slate-500">მონაცემები ვერ მოიძებნა</div>';
+}
+function setFilter(v){active=v;render();}
+function resetView(){query='';document.getElementById('search').value='';const today=dayMap[new Date().getDay()];setFilter(today||'all');}
+function nextSession(now){for(let offset=0;offset<7;offset++){const day=days.find(d=>d.index===(now.getDay()+offset)%7);if(!day)continue;for(const item of day.items){const start=mins(item.start),end=mins(item.end),t=now.getHours()*60+now.getMinutes();if(offset===0&&t>end)continue;return {...item,day,offset,ongoing:offset===0&&t>=start&&t<=end};}}}
+function update(){const now=new Date();document.getElementById('date').textContent=now.toLocaleDateString('ka-GE',{weekday:'long',month:'long',day:'numeric'});document.getElementById('clock').textContent=now.toLocaleTimeString('ka-GE');const n=nextSession(now);if(!n)return;document.getElementById('next-title').textContent=n.title;document.getElementById('next-time').textContent=`${n.day.name} • ${n.start}–${n.end} • ${n.type} • ${duration(n.duration)}`;document.getElementById('next-lecturer').textContent=n.lecturer;document.getElementById('next-location').textContent=n.location;const target=new Date(now);target.setDate(now.getDate()+n.offset);const [h,m]=n.start.split(':');target.setHours(h,m,0,0);if(n.ongoing){document.getElementById('next-status').textContent='მიმდინარეობს ახლა';document.getElementById('countdown').textContent='აქტიურია';}else{const diff=Math.max(0,target-now),s=Math.floor(diff/1000),hh=Math.floor(s/3600),mm=Math.floor(s%3600/60),ss=s%60;document.getElementById('next-status').textContent=n.offset?'მომავალი სესია':'შემდეგი სესია';document.getElementById('countdown').textContent=`${hh?hh+'სთ ':''}${mm}წთ ${ss}წმ`;}}
+document.getElementById('search').addEventListener('input',e=>{query=e.target.value.trim();render();});
+document.getElementById('total-count').textContent=allItems.length;document.getElementById('course-count').textContent=new Set(allItems.map(x=>x.title)).size;document.getElementById('week-hours').textContent=(allItems.reduce((a,x)=>a+x.duration,0)/60).toFixed(1);render();update();setInterval(update,1000);setInterval(render,60000);
+</script>
 </body>
 </html>
