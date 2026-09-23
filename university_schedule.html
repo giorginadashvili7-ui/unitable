@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0d10">
+<title>ჩემი უნივერსიტეტი — განრიგი</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0d10;--panel:#13171d;--panel2:#191f27;--line:#29313b;--text:#f2f5f8;--muted:#99a5b3;--accent:#c7f36b;--blue:#8ab4ff;--orange:#ffc078;--radius:20px}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 90% -15%,#202a31 0,transparent 42%),var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+button{font:inherit;cursor:pointer} .app{max-width:760px;margin:auto;padding:22px 16px calc(40px + env(safe-area-inset-bottom))}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px}.brand{display:flex;align-items:center;gap:11px}.logo{width:44px;height:44px;border-radius:15px;background:var(--accent);color:#10140b;display:grid;place-items:center;font-weight:900;font-size:20px}.eyebrow{color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase}.brand h1{font-size:20px;line-height:1.2;margin:2px 0 0}.today-pill{border:1px solid var(--line);padding:8px 11px;border-radius:99px;color:var(--muted);font-size:12px;white-space:nowrap}
+.hero{background:linear-gradient(135deg,#202a2d,#151b20 70%);border:1px solid #34413e;border-radius:26px;padding:22px;position:relative;overflow:hidden;margin-bottom:20px}.hero:after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;background:#c7f36b0c;right:-55px;top:-70px}.hero-label{display:flex;align-items:center;gap:8px;color:var(--accent);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase}.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px #c7f36b}.hero h2{font-size:24px;line-height:1.22;margin:12px 0 8px;max-width:520px}.hero-sub{color:var(--muted);margin:0 0 18px;font-size:14px}.hero-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.metric{background:#0b0d104d;border:1px solid #ffffff12;border-radius:14px;padding:11px 12px;min-width:0}.metric small{display:block;color:var(--muted);font-size:11px;margin-bottom:4px}.metric strong{font-size:14px;display:block;overflow-wrap:anywhere}.hero-actions{display:flex;gap:9px;margin-top:15px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--panel2);color:var(--text);border-radius:12px;padding:10px 14px;font-weight:650}.btn.primary{background:var(--accent);color:#11170a;border-color:transparent}.btn:focus-visible,.day:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:24px 2px 12px}.section-head h2{font-size:19px;margin:0}.section-head p{margin:3px 0 0;color:var(--muted);font-size:12px}.counter{color:var(--muted);font-size:12px}
+.day-tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 1px 12px;scrollbar-width:none}.day-tabs::-webkit-scrollbar{display:none}.day{flex:1;min-width:64px;border:1px solid var(--line);background:var(--panel);border-radius:15px;padding:10px 8px;color:var(--muted);text-align:center;transition:.18s}.day b{display:block;color:var(--text);font-size:13px}.day span{font-size:11px}.day.active{background:var(--accent);border-color:var(--accent);color:#263018}.day.active b{color:#17200b}.day.today:not(.active){border-color:#71844e}
+.schedule{display:grid;gap:10px}.class-card{display:grid;grid-template-columns:70px minmax(0,1fr);gap:13px;padding:15px;background:var(--panel);border:1px solid var(--line);border-radius:18px;position:relative;transition:transform .18s,border-color .18s}.class-card.next{border-color:#9dbd56;background:linear-gradient(110deg,#1d261b,var(--panel) 65%)}.class-card.now{border-color:var(--blue)}.time{border-right:1px solid var(--line);padding-right:10px;text-align:center;align-self:stretch;display:flex;flex-direction:column;justify-content:center}.time strong{font-size:14px;line-height:1.35}.time small{color:var(--muted);font-size:11px;margin-top:4px}.course{font-weight:750;font-size:15px;line-height:1.35;margin:1px 0 8px}.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}.tag{font-size:11px;border-radius:7px;padding:3px 7px;background:#252d36;color:#c8d2de}.tag.lecture{background:#24364b;color:#a9ccff}.tag.seminar{background:#383326;color:#ffcf8c}.meta{display:grid;gap:5px;color:var(--muted);font-size:12px}.meta-row{display:flex;gap:7px;align-items:flex-start}.meta-row .symbol{width:15px;flex:none;color:#c3ccd5;text-align:center}.status{font-size:11px;color:var(--accent);font-weight:750;margin-top:8px}.empty{border:1px dashed var(--line);border-radius:18px;padding:28px 18px;text-align:center;color:var(--muted);background:#11151a}.empty strong{display:block;color:var(--text);margin-bottom:5px}.summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:20px}.summary-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px}.summary-card small{color:var(--muted);font-size:12px}.summary-card strong{display:block;font-size:23px;margin-top:3px}.summary-card span{color:var(--muted);font-size:11px}
+footer{margin-top:26px;text-align:center;color:#74808d;font-size:11px}
+@media(min-width:620px){.app{padding:30px 24px}.hero{padding:28px}.hero h2{font-size:29px}.class-card{padding:18px 20px;grid-template-columns:82px minmax(0,1fr)}.time strong{font-size:15px}.course{font-size:16px}.meta{grid-template-columns:1fr 1fr;column-gap:15px}.day{padding:12px}}
+@media(max-width:380px){.app{padding-inline:11px}.hero{padding:17px}.hero h2{font-size:21px}.metric{padding:9px}.metric strong{font-size:12px}.class-card{grid-template-columns:61px minmax(0,1fr);gap:10px;padding:13px}.course{font-size:14px}}
+</style>
+</head>
+<body>
+<main class="app">
+<header>
+ <div class="brand"><div class="logo">U</div><div><div class="eyebrow">პირადი აკადემიური სივრცე</div><h1>ჩემი განრიგი</h1></div></div>
+ <div class="today-pill" id="todayPill">იტვირთება…</div>
+</header>
+<section class="hero" aria-live="polite">
+ <div class="hero-label"><span class="dot"></span><span id="heroLabel">უახლოესი მეცადინეობა</span></div>
+ <h2 id="nextTitle">განრიგი იტვირთება…</h2>
+ <p class="hero-sub" id="nextSubtitle">ყველა ლექცია და სამუშაო ჯგუფი ერთ სივრცეში.</p>
+ <div class="hero-grid">
+  <div class="metric"><small>იწყება</small><strong id="nextTime">—</strong></div>
+  <div class="metric"><small>დარჩენილია</small><strong id="countdown">—</strong></div>
+  <div class="metric"><small>დღე</small><strong id="nextDay">—</strong></div>
+ </div>
+ <div class="hero-actions"><button class="btn primary" id="showNext">ნახე მეცადინეობა ↓</button><button class="btn" id="showToday">დღევანდელი დღე</button></div>
+</section>
+<div class="section-head"><div><h2>კვირის განრიგი</h2><p>აირჩიე დღე და ნახე სრული ცხრილი</p></div><span class="counter" id="weekCount">22 მეცადინეობა</span></div>
+<nav class="day-tabs" id="dayTabs" aria-label="კვირის დღეები"></nav>
+<div class="section-head"><div><h2 id="scheduleTitle">სამშაბათი</h2><p id="scheduleSub">მეცადინეობები საათების მიხედვით</p></div><span class="counter" id="dayCount"></span></div>
+<section class="schedule" id="schedule" aria-live="polite"></section>
+<section class="summary">
+ <div class="summary-card"><small>კვირაში სულ</small><strong id="totalClasses">22</strong><span>ლექცია და სამუშაო ჯგუფი</span></div>
+ <div class="summary-card"><small>სასწავლო დღეები</small><strong id="activeDays">4</strong><span>სამშაბათი – პარასკევი</span></div>
+ <div class="summary-card"><small>პირველი დაწყება</small><strong>11:00</strong><span>სამშაბათი / ოთხშაბათი</span></div>
+ <div class="summary-card"><small>ბოლო დასრულება</small><strong>20:50</strong><span>სამშაბათი / ოთხშაბათი / ხუთშაბათი / პარასკევი</span></div>
+</section>
+<footer>განრიგი შენს მიერ მოწოდებული მონაცემებითაა შედგენილი · დრო ნაჩვენებია საქართველოს დროით</footer>
+</main>
+<script>
+const scheduleData = [
+ {day:2,start:"11:00",end:"11:50",course:"მენეჯმენტის საფუძვლები",type:"სამუშაო ჯგუფი",teacher:"ხარხელი მანანა",room:"X კორპუსი / 12 სართული / 1217"},
+ {day:2,start:"12:00",end:"12:50",course:"მენეჯმენტის საფუძვლები",type:"სამუშაო ჯგუფი",teacher:"ხარხელი მანანა",room:"X კორპუსი / 12 სართული / 1217"},
+ {day:2,start:"13:00",end:"14:50",course:"ეკონომიკის ციფრული ტრანსფორმაცია და მდგრადი ეკონომიკა",type:"სამუშაო ჯგუფი",teacher:"ლაშარაშვილი თეა",room:"X კორპუსი / 10 სართული / 1010"},
+ {day:2,start:"15:00",end:"15:50",course:"მარკეტინგი 2",type:"სამუშაო ჯგუფი",teacher:"მიქატაძე ცირა",room:"X კორპუსი / 11 სართული / 1104"},
+ {day:2,start:"16:00",end:"16:50",course:"მარკეტინგი 2",type:"სამუშაო ჯგუფი",teacher:"მიქატაძე ცირა",room:"X კორპუსი / 11 სართული / 1104"},
+ {day:2,start:"17:00",end:"18:50",course:"მიკროეკონომიკის პრინციპები",type:"სამუშაო ჯგუფი",teacher:"ჭიკაიძე ნათია",room:"X კორპუსი / 9 სართული / 902"},
+ {day:2,start:"19:00",end:"20:50",course:"ბიზნესის ადმინისტრირების საფუძვლები 1 (ბიზნესის გარემო)",type:"სამუშაო ჯგუფი",teacher:"შენგელია თეიმურაზ",room:"X კორპუსი / 10 სართული / 1006"},
+ {day:3,start:"11:00",end:"11:50",course:"მენეჯმენტის საფუძვლები",type:"ლექცია",teacher:"ქიშელაშვილი გიული",room:"X კორპუსი / 2 სართული / 201"},
+ {day:3,start:"15:00",end:"15:50",course:"მარკეტინგი 2",type:"ლექცია",teacher:"სეთური მაია",room:"X კორპუსი / 11 სართული / 1110"},
+ {day:3,start:"17:00",end:"17:50",course:"ადამიანური რესურსების მართვა",type:"სამუშაო ჯგუფი",teacher:"ტუღუში მირიან",room:"X კორპუსი / 12 სართული / 1212"},
+ {day:3,start:"18:00",end:"18:50",course:"ადამიანური რესურსების მართვა",type:"სამუშაო ჯგუფი",teacher:"ტუღუში მირიან",room:"X კორპუსი / 12 სართული / 1212"},
+ {day:3,start:"19:00",end:"19:50",course:"ბიზნესის ადმინისტრირების საფუძვლები 1 (ბიზნესის გარემო)",type:"ლექცია",teacher:"ბაბუნაშვილი თეიმურაზ",room:"X კორპუსი / 2 სართული / 208"},
+ {day:3,start:"20:00",end:"20:50",course:"მიკროეკონომიკის პრინციპები",type:"ლექცია",teacher:"ავალიანი ეკა",room:"X კორპუსი / 2 სართული / 205"},
+ {day:4,start:"17:00",end:"17:50",course:"ეკონომიკის ციფრული ტრანსფორმაცია და მდგრადი ეკონომიკა",type:"ლექცია",teacher:"კაკულია ნაზირა",room:"X კორპუსი / 2 სართული / 201"},
+ {day:4,start:"19:00",end:"19:50",course:"ფინანსური ინსტიტუტები და ბაზრები",type:"ლექცია",teacher:"ჩუთლაშვილი ავთანდილი",room:"X კორპუსი / 2 სართული / 202"},
+ {day:5,start:"18:00",end:"18:50",course:"ადამიანური რესურსების მართვა",type:"ლექცია",teacher:"კურტანიძე ანა",room:"X კორპუსი / 2 სართული / 201"},
+ {day:5,start:"19:00",end:"19:50",course:"ფინანსური ინსტიტუტები და ბაზრები",type:"სამუშაო ჯგუფი",teacher:"დუდუჩავა ლილია",room:"X კორპუსი / 4 სართული / 404 (სასწავლო)"},
+ {day:5,start:"20:00",end:"20:50",course:"ფინანსური ინსტიტუტები და ბაზრები",type:"სამუშაო ჯგუფი",teacher:"დუდუჩავა ლილია",room:"X კორპუსი / 4 სართული / 404 (სასწავლო)"}
+];
+const days=[{id:1,name:"ორშაბათი",short:"ორშ"},{id:2,name:"სამშაბათი",short:"სამშ"},{id:3,name:"ოთხშაბათი",short:"ოთხშ"},{id:4,name:"ხუთშაბათი",short:"ხუთშ"},{id:5,name:"პარასკევი",short:"პარ"},{id:6,name:"შაბათი",short:"შაბ"},{id:0,name:"კვირა",short:"კვირ"}];
+const fmtDate=d=>new Intl.DateTimeFormat('ka-GE',{weekday:'long',day:'numeric',month:'long',timeZone:'Asia/Tbilisi'}).format(d);
+const todayLocal=()=>new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Tbilisi'}));
+function dateFor(dayId, time, base=todayLocal()){
+ const d=new Date(base);let delta=(dayId-d.getDay()+7)%7;const [h,m]=time.split(':').map(Number);
+ d.setDate(d.getDate()+delta);d.setHours(h,m,0,0);
+ if(delta===0 && d<=base)d.setDate(d.getDate()+7);
+ return d;
+}
+function startAt(item, base=todayLocal()){
+ const d=new Date(base);let delta=(item.day-d.getDay()+7)%7;const [h,m]=item.start.split(':').map(Number);d.setDate(d.getDate()+delta);d.setHours(h,m,0,0);return d;
+}
+function endAt(item, base=todayLocal()){const d=new Date(base);let delta=(item.day-d.getDay()+7)%7;const [h,m]=item.end.split(':').map(Number);d.setDate(d.getDate()+delta);d.setHours(h,m,0,0);return d;}
+function upcoming(base=todayLocal()){
+ const candidates=[];
+ for(const item of scheduleData){let s=startAt(item,base),e=endAt(item,base);
+  if(e>base){if(s<=base){candidates.push({...item,when:s,finish:e,isNow:true});}
+   else candidates.push({...item,when:s,finish:e,isNow:false});}
+ }
+ candidates.sort((a,b)=>a.when-b.when);return candidates[0]||null;
+}
+function durationText(ms){let mins=Math.max(0,Math.floor(ms/60000));let days=Math.floor(mins/1440);mins%=1440;let hours=Math.floor(mins/60);mins%=60;return [days?days+' დღე':'',hours?hours+' სთ':'',mins?mins+' წთ':''].filter(Boolean).join(' ')||'ახლა';}
+function dayName(id){return days.find(d=>d.id===id).name;}
+function dateForNext(item){return fmtDate(item.when);}
+let selectedDay=null;
+function renderTabs(){
+ const now=todayLocal();const holder=document.getElementById('dayTabs');
+ holder.innerHTML=days.map(d=>{const n=scheduleData.filter(x=>x.day===d.id).length;return `<button class="day ${selectedDay===d.id?'active':''} ${now.getDay()===d.id?'today':''}" data-day="${d.id}"><b>${d.short}</b><span>${n? n+' მეც.':'დასვენება'}</span></button>`}).join('');
+ holder.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{selectedDay=Number(b.dataset.day);renderTabs();renderSchedule();}));
+}
+function renderSchedule(){
+ const day=days.find(d=>d.id===selectedDay);const items=scheduleData.filter(x=>x.day===selectedDay).sort((a,b)=>a.start.localeCompare(b.start));
+ document.getElementById('scheduleTitle').textContent=day.name;
+ document.getElementById('scheduleSub').textContent=items.length?'მეცადინეობები დაწყების დროის მიხედვით':'ამ დღეს დაგეგმილი მეცადინეობა არ გაქვს';
+ document.getElementById('dayCount').textContent=items.length?`${items.length} მეცადინეობა`:'თავისუფალი დღე';
+ const next=upcoming();
+ if(!items.length){document.getElementById('schedule').innerHTML='<div class="empty"><strong>დღე თავისუფალია 🎉</strong>ამ დღისთვის ცხრილში ლექცია ან სამუშაო ჯგუფი არ არის.</div>';return;}
+ document.getElementById('schedule').innerHTML=items.map(item=>{
+  const s=startAt(item),e=endAt(item);let cls='class-card',status='';
+  if(next&&item.course===next.course&&item.day===next.day&&item.start===next.start){cls+=' '+(next.isNow?'now':'next');status=next.isNow?'მიმდინარეობს ახლა':'უახლოესი მეცადინეობა';}
+  const typeClass=item.type==='ლექცია'?'lecture':'seminar';
+  return `<article class="${cls}"><div class="time"><strong>${item.start}<br>– ${item.end}</strong><small>${Math.round((e-s)/60000)} წთ</small></div><div><div class="course">${item.course}</div><div class="tags"><span class="tag ${typeClass}">${item.type}</span><span class="tag">${dayName(item.day)}</span></div><div class="meta"><div class="meta-row"><span class="symbol">♙</span><span>${item.teacher}</span></div><div class="meta-row"><span class="symbol">⌖</span><span>${item.room}</span></div></div>${status?`<div class="status">● ${status}</div>`:''}</div></article>`;
+ }).join('');
+}
+function renderHero(){
+ const now=todayLocal(),n=upcoming();document.getElementById('todayPill').textContent=fmtDate(now);
+ if(!n){document.getElementById('heroLabel').textContent='განრიგი დასრულებულია';document.getElementById('nextTitle').textContent='ამ კვირისთვის მეტი მეცადინეობა აღარ არის';document.getElementById('nextSubtitle').textContent='შემდეგი სასწავლო კვირის დაწყებისას განრიგი ავტომატურად განახლდება.';return;}
+ document.getElementById('heroLabel').textContent=n.isNow?'მიმდინარე მეცადინეობა':'უახლოესი მეცადინეობა';
+ document.getElementById('nextTitle').textContent=n.course;
+ document.getElementById('nextSubtitle').textContent=`${n.type} · ${n.teacher} · ${n.room}`;
+ document.getElementById('nextTime').textContent=`${n.start}–${n.end}`;
+ document.getElementById('nextDay').textContent=n.isNow?'დღეს':dayName(n.day);
+ document.getElementById('countdown').textContent=n.isNow?`დასრულებამდე ${durationText(n.finish-now)}`:durationText(n.when-now);
+}
+function initialize(){
+ document.getElementById('weekCount').textContent=scheduleData.length+' მეცადინეობა';
+ document.getElementById('totalClasses').textContent=scheduleData.length;
+ document.getElementById('activeDays').textContent=new Set(scheduleData.map(x=>x.day)).size;
+ const today=todayLocal();selectedDay=scheduleData.some(x=>x.day===today.getDay())?today.getDay():2;
+ renderTabs();renderSchedule();renderHero();
+ document.getElementById('showNext').addEventListener('click',()=>{const n=upcoming();if(n){selectedDay=n.day;renderTabs();renderSchedule();document.getElementById('schedule').scrollIntoView({behavior:'smooth',block:'start'});}});
+ document.getElementById('showToday').addEventListener('click',()=>{selectedDay=todayLocal().getDay();renderTabs();renderSchedule();document.getElementById('schedule').scrollIntoView({behavior:'smooth',block:'start'});});
+}
+initialize();setInterval(()=>{renderHero();renderSchedule();},30000);
+</script>
+</body>
+</html>
